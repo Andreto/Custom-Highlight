@@ -1,0 +1,44 @@
+body {
+  margin: 0;
+  width: 200px;
+  padding: 10px;
+}
+h1 {
+  margin-top: 0;
+  color: #fff;
+  background-color: #ff1c6b;
+}
+
+.vertical-box {
+}
+.box-header{
+  color: #555;
+  font-weight: bold;
+  background-color: #e5e5e5;
+  width: 100px;
+  text-align: center;
+}
+.color-input {
+  height: 32px;
+  width: 188px;
+  margin: 0;
+  padding: 0 6px;
+  border: none;
+  background-color: #e5e5e5;
+  color: #555;
+  font-size: 16px;
+}
+.color-box {
+  margin: 0;
+  width: 192px;
+  height: 32px;
+  background-color: #ff80e4;
+  border: solid 4px #e5e5e5;
+}
+
+
+input,
+textarea,
+select {
+  outline: none;
+}

@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+
+  "name": "Custom Highlight",
+  "description": "A chrome extension for customizing highlight color.",
+  "version": "1.0",
+
+  "browser_action": {
+   "default_popup": "popup.html"
+  },
+  "permissions": [
+   "activeTab"
+   ]
+}
