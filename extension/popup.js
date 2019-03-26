@@ -1,36 +1,51 @@
 let highlightInput = document.getElementById('highlight-input');
+let highlightTextInput = document.getElementById('highlight-text-input');
 let highlightOnOff = document.getElementById('highlight-on-off');
 
-highlightInput.onchange = function() {
-  var color = highlightInput.value.replace("#", "");
-  if (color.length == 6 || color.length == 3){
-    color = "#" + color;
-  }else{
-    color = "#ff1c6b"
-  }
-  document.getElementById('highlight-color').style.background = color;
-  highlightInput.value = color;
-  chrome.storage.sync.set({highlightColor: color}, function() {
-    console.log('highlightColor is set to ' + color);
+function setInputOnchange(inputElem, colorElem, standardColor, storageKey){
+  inputElem.onchange = function() {
+    var color = inputElem.value.replace("#", "");
+    if (color.length == 6 || color.length == 3){
+      color = "#" + color;
+    }else{
+      color = standardColor;
+    }
+    document.getElementById(colorElem).style.background = color;
+    inputElem.value = color;
+    var storageObj = {};
+    storageObj[storageKey] = color;
+    chrome.storage.sync.set(storageObj, function() {
+      console.log('highlightColor is set to ' + color);
+    });
+  };
+};
+
+setInputOnchange(highlightInput, 'highlight-color', '#ff80e4', 'highlightColor');
+setInputOnchange(highlightTextInput, 'highlight-text-color', '#ffffff', 'highlightTextColor');
+
+highlightOnOff.onchange = function() {
+  chrome.storage.sync.set({highlightOnOff: highlightOnOff.checked}, function() {
+    console.log('highlightOnOff is now ' + highlightOnOff.checked);
   });
- };
+}
 
- highlightOnOff.onchange = function() {
-   chrome.storage.sync.set({highlightOnOff: highlightOnOff.checked}, function() {
-     console.log('highlightOnOff is now ' + highlightOnOff.checked);
-   });
- }
+function updatePopupValues(inputElem, colorElem, standardColor, storageKey, resultObj){
+  if(resultObj == undefined){
+    document.getElementById(colorElem).style.background = standardColor;
+    inputElem.value = standardColor;
+    var storageObj = {};
+    storageObj[storageKey] = standardColor;
+    chrome.storage.sync.set(storageObj, function() {
+      console.log('highlightColor is set to ' + standardColor);
+    });
+  }else{
+    document.getElementById(colorElem).style.background = resultObj;
+    inputElem.value = resultObj;
+  }
+};
 
-chrome.storage.sync.get(['highlightColor', 'highlightOnOff'], function(result) {
-   if(result.highlightColor == undefined){
-     chrome.storage.sync.set({highlightColor: '#ff1c6b'}, function() {
-       console.log('highlightColor is set to ' + '#ff1c6b');
-       document.getElementById('highlight-color').style.background = '#ff1c6b';
-       highlightInput.value = '#ff1c6b';
-     });
-   }else{
-     document.getElementById('highlight-color').style.background = result.highlightColor;
-     highlightInput.value = result.highlightColor;
-   }
-   highlightOnOff.checked = result.highlightOnOff;
+chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff'], function(result) {
+  updatePopupValues(highlightInput, 'highlight-color', '#ff80e4', 'highlightColor', result.highlightColor);
+  updatePopupValues(highlightTextInput, 'highlight-text-color', '#ffffff', 'highlightTextColor', result.highlightTextColor);
+  highlightOnOff.checked = result.highlightOnOff;
  });
