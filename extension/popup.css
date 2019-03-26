@@ -5,13 +5,16 @@ body {
 }
 h1 {
   margin-top: 0;
+  margin-bottom: 0;
   color: #fff;
   background-color: #ff1c6b;
 }
 
 .vertical-box {
+  margin-top: 16px;
+  position: relative;
 }
-.box-header{
+.box-label{
   color: #555;
   font-weight: bold;
   background-color: #e5e5e5;
@@ -19,6 +22,7 @@ h1 {
   text-align: center;
 }
 .color-input {
+  font-family: "Lucida Console", Monaco, monospace;
   height: 32px;
   width: 188px;
   margin: 0;
@@ -32,10 +36,39 @@ h1 {
   margin: 0;
   width: 192px;
   height: 32px;
-  background-color: #ff80e4;
   border: solid 4px #e5e5e5;
 }
+#highlight-text-color{
+  background-color: #ffffff;
+}
+#highlight-color{
+  background-color: #ff80e4;
+}
 
+.style-check-container {
+  margin-right: 6px;
+  background-color: #e5e5e5;
+  padding-top: 7px;
+}
+.style-check {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  display: inline;
+}
+.style-check-label {
+  color: #555;
+  text-align: center;
+  display: inline;
+}
+#on-off-check-container {
+  margin-top: 6px;
+}
+#auto-text-check-container {
+  position: absolute;
+  top: 16px;
+  right: 0;
+}
 
 input,
 textarea,
