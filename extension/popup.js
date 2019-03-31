@@ -5,17 +5,12 @@ let highlightAutoTextColor = document.getElementById('highlight-auto-text')
 
 function hexToRgb(hex) {
     var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-        return r + r + g + g + b + b;
-    });
-
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {return r + r + g + g + b + b;});
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-    } : null;
+    return result ? {r: parseInt(result[1], 16),g: parseInt(result[2], 16),b: parseInt(result[3], 16)} : null;
 }
+function componentToHex(c) {var hex = c.toString(16);return hex.length == 1 ? "0" + hex : hex;}
+function rgbToHex(r, g, b) {return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);}
 
 function inputUpdate(inputElem, colorElem, standardColor, storageKey){
   var color = inputElem.value.replace("#", "");
@@ -63,16 +58,10 @@ function autoTextColorSet() {
   chrome.storage.sync.get(['highlightColor', 'highlightAutoTextColor', 'highlightTextColor'], function(result) {
     if (result.highlightAutoTextColor) {
       var rgb = hexToRgb(result.highlightColor);
-      if ((rgb.r + rgb.g + rgb.b)/3 > 128){
-        highlightTextInput.value = '#000000'
-        console.log("highlight-text-color auto-set: #0")
-      }else{
-        highlightTextInput.value = '#ffffff'
-        console.log("highlight-text-color auto-set: #f")
-      };
+      highlightTextInput.value = (rgbToHex(255-rgb.r, 255-rgb.g, 255-rgb.b))
       document.getElementById('highlight-text-color').style.background = highlightTextInput.value;
       if (result.highlightTextColor !== highlightTextInput.value){
-        chrome.storage.sync.set({highlightTextInput: highlightTextInput.value}, function() {});
+        chrome.storage.sync.set({highlightTextColor: highlightTextInput.value}, function() {});
       }
     };
     highlightTextInput.disabled = result.highlightAutoTextColor;
