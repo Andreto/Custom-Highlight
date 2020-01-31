@@ -1,6 +1,7 @@
 body {
   margin: 0;
   width: 200px;
+  min-height: 300px;
   padding: 10px;
 }
 h1 {
@@ -98,4 +99,8 @@ input,
 textarea,
 select {
   outline: none;
+}
+
+.pcr-button {
+  width: 200px !important;
 }

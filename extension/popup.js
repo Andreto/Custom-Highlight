@@ -1,7 +1,9 @@
-let highlightInput = document.getElementById('highlight-input');
-let highlightTextInput = document.getElementById('highlight-text-input');
-let highlightOnOff = document.getElementById('highlight-on-off');
-let highlightAutoTextColor = document.getElementById('highlight-auto-text')
+var highlightInput = document.getElementById('highlight-input');
+var highlightTextInput = document.getElementById('highlight-text-input');
+var highlightOnOff = document.getElementById('highlight-on-off');
+var highlightAutoTextColor = document.getElementById('highlight-auto-text')
+var standardColor = "#ffa500"
+var standardTextColor = "#ffffff"
 
 function hexToRgb(hex) {
     var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -28,14 +30,11 @@ function inputUpdate(inputElem, colorElem, standardColor, storageKey){
   });
 };
 
-highlightInput.onchange = function() {inputUpdate(highlightInput, 'highlight-color', '#ffa500', 'highlightColor');autoTextColorSet();};
-highlightTextInput.onchange = function() {inputUpdate(highlightTextInput, 'highlight-text-color', '#ffffff', 'highlightTextColor');};
-
 highlightOnOff.onchange = function() {
   chrome.storage.sync.set({highlightOnOff: highlightOnOff.checked}, function() {});
 }
 
-function updatePopupValues(inputElem, colorElem, standardColor, storageKey, resultObj){
+function updatePopupValues(inputElem, storageKey, resultObj){
   if(resultObj == undefined){
     document.getElementById(colorElem).style.background = standardColor;
     inputElem.value = standardColor;
@@ -43,23 +42,16 @@ function updatePopupValues(inputElem, colorElem, standardColor, storageKey, resu
     storageObj[storageKey] = standardColor;
     chrome.storage.sync.set(storageObj, function() {});
   }else{
-    document.getElementById(colorElem).style.background = resultObj;
     inputElem.value = resultObj;
   }
 };
-
-chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff'], function(result) {
-  updatePopupValues(highlightInput, 'highlight-color', '#ff80e4', 'highlightColor', result.highlightColor);
-  updatePopupValues(highlightTextInput, 'highlight-text-color', '#ffffff', 'highlightTextColor', result.highlightTextColor);
-  highlightOnOff.checked = result.highlightOnOff;
-});
 
 function autoTextColorSet() {
   chrome.storage.sync.get(['highlightColor', 'highlightAutoTextColor', 'highlightTextColor'], function(result) {
     if (result.highlightAutoTextColor) {
       var rgb = hexToRgb(result.highlightColor.substring(0, 7));
+      TXTpickr.setColor(rgbToHex(255-rgb.r, 255-rgb.g, 255-rgb.b));
       highlightTextInput.value = (rgbToHex(255-rgb.r, 255-rgb.g, 255-rgb.b))
-      document.getElementById('highlight-text-color').style.background = highlightTextInput.value;
       if (result.highlightTextColor !== highlightTextInput.value){
         chrome.storage.sync.set({highlightTextColor: highlightTextInput.value}, function() {});
       }
@@ -74,3 +66,59 @@ highlightAutoTextColor.onchange = function() {
   chrome.storage.sync.set({highlightAutoTextColor: highlightAutoTextColor.checked}, function() {});
   autoTextColorSet();
 }
+
+
+// Pickr - color picker
+var pickrComponents = {
+    preview: true,
+    opacity: true,
+    hue: true,
+    interaction: {
+        hex: false,
+        rgba: false,
+        hsla: false,
+        hsva: false,
+        cmyk: false,
+        input: true,
+        clear: false,
+        save: true
+    }
+}
+
+const BGpickr = Pickr.create({
+    el: '.color-picker-bg',
+    theme: 'nano',
+    default: '#f18458',
+    defaultRepresentation: 'HEX',
+    components: pickrComponents
+});
+
+const TXTpickr = Pickr.create({
+    el: '.color-picker-txt',
+    theme: 'nano',
+    default: '#ffffff',
+    defaultRepresentation: 'HEX',
+    components: pickrComponents
+});
+
+BGpickr.on('save', (color, instance) => {
+    console.log('save', color, instance);
+    chrome.storage.sync.set({highlightColor: color.toHEXA().toString()}, function() {});
+    highlightInput.value = color.toHEXA().toString();
+    autoTextColorSet();
+});
+TXTpickr.on('save', (color, instance) => {
+    console.log('save', color, instance);
+    chrome.storage.sync.set({highlightTextColor: color.toHEXA().toString()}, function() {});
+    highlightTextInput.value = color.toHEXA().toString();
+});
+
+
+//Update Values
+chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff'], function(result) {
+  //updatePopupValues(highlightInput, 'highlight-color', '#ff80e4', 'highlightColor', result.highlightColor);
+  //updatePopupValues(highlightTextInput, 'highlightTextColor', result.highlightTextColor);
+  highlightOnOff.checked = result.highlightOnOff;
+  BGpickr.setColor(result.highlightColor);
+  TXTpickr.setColor(result.highlightTextColor);
+});
