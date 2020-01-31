@@ -14,7 +14,7 @@ function rgbToHex(r, g, b) {return "#" + componentToHex(r) + componentToHex(g) +
 
 function inputUpdate(inputElem, colorElem, standardColor, storageKey){
   var color = inputElem.value.replace("#", "");
-  if (color.length == 6 || color.length == 3){
+  if (color.length == 6 || color.length == 3 || color.length == 8){
     color = "#" + color;
   }else{
     color = standardColor;
@@ -28,7 +28,7 @@ function inputUpdate(inputElem, colorElem, standardColor, storageKey){
   });
 };
 
-highlightInput.onchange = function() {inputUpdate(highlightInput, 'highlight-color', '#ff80e4', 'highlightColor');autoTextColorSet();};
+highlightInput.onchange = function() {inputUpdate(highlightInput, 'highlight-color', '#ffa500', 'highlightColor');autoTextColorSet();};
 highlightTextInput.onchange = function() {inputUpdate(highlightTextInput, 'highlight-text-color', '#ffffff', 'highlightTextColor');};
 
 highlightOnOff.onchange = function() {
@@ -57,7 +57,7 @@ chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff
 function autoTextColorSet() {
   chrome.storage.sync.get(['highlightColor', 'highlightAutoTextColor', 'highlightTextColor'], function(result) {
     if (result.highlightAutoTextColor) {
-      var rgb = hexToRgb(result.highlightColor);
+      var rgb = hexToRgb(result.highlightColor.substring(0, 7));
       highlightTextInput.value = (rgbToHex(255-rgb.r, 255-rgb.g, 255-rgb.b))
       document.getElementById('highlight-text-color').style.background = highlightTextInput.value;
       if (result.highlightTextColor !== highlightTextInput.value){
