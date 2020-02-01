@@ -84,7 +84,6 @@ h1 {
 }
 .footer{
   margin-top: 16px;
-  display: none;
 }
 .ftr-item {
   margin: 0 10px;
@@ -103,4 +102,6 @@ select {
 
 .pcr-button {
   width: 200px !important;
+  height: 34px !important;
+  border: 4px solid #e5e5e5 !important;
 }

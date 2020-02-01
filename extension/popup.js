@@ -5,6 +5,14 @@ var highlightAutoTextColor = document.getElementById('highlight-auto-text')
 var standardColor = "#ffa500"
 var standardTextColor = "#ffffff"
 
+document.addEventListener('DOMContentLoaded', function () {
+  for (const anchor of document.getElementsByTagName('a')) {
+    anchor.onclick = () => {
+      chrome.tabs.create({active: true, url: anchor.href});
+    };
+  };
+});
+
 function hexToRgb(hex) {
     var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
     hex = hex.replace(shorthandRegex, function(m, r, g, b) {return r + r + g + g + b + b;});
