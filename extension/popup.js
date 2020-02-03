@@ -64,7 +64,6 @@ function autoTextColorSet() {
         chrome.storage.sync.set({highlightTextColor: highlightTextInput.value}, function() {});
       }
     };
-    highlightTextInput.disabled = result.highlightAutoTextColor;
     highlightAutoTextColor.checked = result.highlightAutoTextColor;
   });
 }
