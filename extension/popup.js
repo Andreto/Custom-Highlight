@@ -117,8 +117,9 @@ BGpickr.on('save', (color, instance) => {
 });
 TXTpickr.on('save', (color, instance) => {
     console.log('save', color, instance);
-    chrome.storage.sync.set({highlightTextColor: color.toHEXA().toString()}, function() {});
+    chrome.storage.sync.set({highlightTextColor: color.toHEXA().toString(), highlightAutoTextColor: false}, function() {});
     highlightTextInput.value = color.toHEXA().toString();
+    highlightAutoTextColor.checked = false;
     document.getElementsByTagName("h1")[0].style.color = color.toHEXA().toString();
 });
 
