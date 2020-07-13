@@ -1,4 +1,7 @@
 # Custom-Highlight
-A chrome extension for customizing highlight color.
-![](https://lh3.googleusercontent.com/Nojv7yR-4PYIBs1AQOO4uHzVrCVYSEUbSGDD6M1GGA8poCr9xeUwzcVaICpzJ91pkwZJVpw0sA=w640-h400-e365)
-![](https://lh3.googleusercontent.com/U1KrMHl1m3OVnvLAV2QxSh9OPX6jEQNTuaRlk83lsdxlUPlM0HZ32DdzZC9t9PL5CimdHr6A1g=w640-h400-e365)
+<p align="center">
+  A chrome extension for customizing highlight color.
+  <img src="https://lh3.googleusercontent.com/JccBC3pVKq8Yce7EI1c1f1qjeeO8iQSm3QkYaB9IDIWlN5DREKiyrKwF9dmZwrTukFpmvyemlUM=w640-h400-e365">
+  <img src="https://lh3.googleusercontent.com/ybH5opDzrxzxAXH3AiWisCGWpx2Gai9Hi6d-S5_tAEgHfgDBWhT2LjUHI0fTFHuG4Y3Mm_44=w640-h400-e365">
+  <img src="https://lh3.googleusercontent.com/07OzP7N_lWPwoY4xc4FI6hXLaVVJ5XfFugrTfO-ZF-pl3VKAHWUwzQnl_k2Wv7ffNZawejPEZCE=w640-h400-e365">
+</p>
