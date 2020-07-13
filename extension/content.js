@@ -13,3 +13,9 @@ chrome.storage.sync.get(['highlightColor', 'highlightOnOff', 'highlightTextColor
     document.head.appendChild(element);
   }
 });
+
+for (i = 0; i < document.querySelectorAll("style.darkreader").length; i++) {
+  if (document.querySelectorAll("style.darkreader")[i].innerHTML.includes("::selection")) {
+    document.querySelectorAll("style.darkreader")[i].innerHTML = document.querySelectorAll("style.darkreader")[i].innerHTML.replace("::selection", "#CustomHighlight-DarkreaderSelectionReplacer");
+  }
+};
