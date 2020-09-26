@@ -58,12 +58,13 @@ function autoTextColorSet() {
   chrome.storage.sync.get(['highlightColor', 'highlightAutoTextColor', 'highlightTextColor'], function(result) {
     if (result.highlightAutoTextColor) {
       var rgb = hexToRgb(result.highlightColor.substring(0, 7));
-      TXTpickr.setColor(rgbToHex(255-rgb.r, 255-rgb.g, 255-rgb.b));
-      highlightTextInput.value = (rgbToHex(255-rgb.r, 255-rgb.g, 255-rgb.b))
+      highlightTextInput.value = (rgbToHex(255-rgb.r, 255-rgb.g, 255-rgb.b)).toUpperCase();
       if (result.highlightTextColor !== highlightTextInput.value){
         chrome.storage.sync.set({highlightTextColor: highlightTextInput.value}, function() {});
       }
+      TXTpickr.setColor(rgbToHex(255-rgb.r, 255-rgb.g, 255-rgb.b));
     };
+    console.log(result.highlightAutoTextColor);
     highlightAutoTextColor.checked = result.highlightAutoTextColor;
   });
 }
@@ -125,17 +126,19 @@ const TXTpickr = Pickr.create({
 });
 
 BGpickr.on('save', (color, instance) => {
-    console.log('save', color, instance);
+    console.log('save', color, instance, 'color');
     chrome.storage.sync.set({highlightColor: color.toHEXA().toString()}, function() {});
     highlightInput.value = color.toHEXA().toString();
     autoTextColorSet();
     document.getElementsByTagName("h1")[0].style.background = color.toHEXA().toString();
 });
 TXTpickr.on('save', (color, instance) => {
-    console.log('save', color, instance);
-    chrome.storage.sync.set({highlightTextColor: color.toHEXA().toString(), highlightAutoTextColor: false}, function() {});
-    highlightTextInput.value = color.toHEXA().toString();
-    highlightAutoTextColor.checked = false;
+    console.log('save', color, instance, 'txt');
+    chrome.storage.sync.get(['highlightTextColor'], function(result) { if (result.highlightTextColor !== color.toHEXA().toString()){
+      chrome.storage.sync.set({highlightTextColor: color.toHEXA().toString(), highlightAutoTextColor: false}, function() {});
+      highlightTextInput.value = color.toHEXA().toString();
+      highlightAutoTextColor.checked = false;
+    }});
     document.getElementsByTagName("h1")[0].style.color = color.toHEXA().toString();
 });
 
