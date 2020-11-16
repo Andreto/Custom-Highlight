@@ -19,9 +19,9 @@ h1 {
 .box-label{
   color: #555;
   font-weight: bold;
-  background-color: #e5e5e5;
+  background-color: #e5e5e500;
   width: 100px;
-  text-align: center;
+  padding-bottom: 6px;
 }
 .color-input {
   font-family: "Lucida Console", Monaco, monospace;
@@ -30,7 +30,9 @@ h1 {
   margin: 0;
   padding: 0 6px;
   border: none;
-  background-color: #e5e5e5;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
   color: #555;
   font-size: 16px;
 }
@@ -40,17 +42,22 @@ h1 {
   height: 32px;
   border: solid 4px #e5e5e5;
 }
+.color-picker-txt{
+  position
+}
+
+
 #highlight-text-color{
   background-color: #ffffff;
 }
 #highlight-color{
-  background-color: #ff80e4;
+  background-color: #4285F4;
 }
 
 .style-check-container {
-  margin-right: 6px;
-  background-color: #e5e5e5;
-  padding-top: 7px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 .style-check {
   margin: 0;
@@ -67,21 +74,6 @@ h1 {
   background-color: #e5e5e5;
   width: 200px;
   margin-top: 16px;
-}
-#highlight-on-off {
-  width: 16px;
-  height: 16px;
-}
-#highlight-on-off::after {
-  content: "On/Off";
-  padding-left: 20px;
-  color: #555;
-  font-weight: bold;
-}
-#auto-text-check-container {
-  position: absolute;
-  top: 16px;
-  right: 0;
 }
 .footer{
   margin-top: 16px;
@@ -101,13 +93,78 @@ select {
   outline: none;
 }
 
-.pcr-button {
-  width: 200px !important;
-  height: 34px !important;
-  border: 4px solid #e5e5e5 !important;
-}
-
 .ext-version {
   text-align: center;
   color: #777777;
+}
+
+
+/*Togle Switch*/
+.switch {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: inline-block;
+  width: 41px;
+  height: 20px;
+}
+
+.switch .switch-check {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  box-sizing: border-box;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 4px;
+  bottom: 3px;
+  background-color: #aaa;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.switch-check:checked + .slider {
+  background-color: #4285F4;
+  border: 1px solid #4285F4;;
+}
+
+.switch-check:checked + .slider:before {
+  background-color: #fff;
+}
+
+.switch-check:focus + .slider {
+  box-shadow: 0 0 1px #4285F4;
+}
+
+.switch-check:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider {
+  border-radius: 20px;
+}
+
+.slider:before {
+  border-radius: 50%;
 }

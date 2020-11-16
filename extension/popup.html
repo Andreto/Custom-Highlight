@@ -14,16 +14,21 @@
     </div>
     <div class="vertical-box">
       <div class="box-label">Text Color</div>
-      <input type="text" id="highlight-text-input" class="color-input" value="#ffffff" maxlength="9" readonly>
-      <div class="color-picker-txt"></div>
       <div class="style-check-container" id="auto-text-check-container">
         <div class="style-check-label">Auto</div>
         <input type="checkbox" class="style-check" id="highlight-auto-text">
       </div>
+      <div class="color-input-box">
+        <input type="text" id="highlight-text-input" class="color-input" value="#ffffff" maxlength="9" readonly>
+        <div class="color-picker-txt"></div>
+      </div>
     </div>
-
-    <div class="fillet-100">
-      <input type="checkbox" id="highlight-on-off">
+    <div class="vertical-box">
+      <div class="box-label">On/Off</div>
+      <label class="switch">
+        <input class="switch-check" type="checkbox" id="highlight-on-off">
+        <span class="slider"></span>
+      </label>
     </div>
 
     <div class="footer">
@@ -31,7 +36,7 @@
       <a class="ftr-item" href="https://www.paypal.me/andreastornkvist">donate</a>
       <a class="ftr-item" href="https://andreto.github.io/Custom-Highlight/">about</a>
     </div>
-    <div class="ext-version">v1.3.5 dev</div>
+    <div class="ext-version">v1.4.1 dev</div>
     <script src="pickr/pickr.min.js"></script>
     <script src="popup.js"></script>
   </body>
