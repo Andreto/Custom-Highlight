@@ -2,8 +2,8 @@ var highlightInput = document.getElementById('highlight-input');
 var highlightTextInput = document.getElementById('highlight-text-input');
 var highlightOnOff = document.getElementById('highlight-on-off');
 var highlightAutoTextColor = document.getElementById('highlight-auto-text')
-var standardColor = "#ffa500"
-var standardTextColor = "#ffffff"
+var standardColor = "#FFA500"
+var standardTextColor = "#005AFF"
 
 document.addEventListener('DOMContentLoaded', function () {
   for (const anchor of document.getElementsByTagName('a')) {
