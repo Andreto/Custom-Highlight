@@ -2,8 +2,8 @@ var highlightInput = document.getElementById('highlight-input');
 var highlightTextInput = document.getElementById('highlight-text-input');
 var highlightOnOff = document.getElementById('highlight-on-off');
 var highlightAutoTextColor = document.getElementById('highlight-auto-text')
-var standardColor = "#ffa500"
-var standardTextColor = "#ffffff"
+var standardColor = "#FFA500"
+var standardTextColor = "#005AFF"
 
 document.addEventListener('DOMContentLoaded', function () {
   for (const anchor of document.getElementsByTagName('a')) {
@@ -80,7 +80,8 @@ function changePupopTheme(){
 }
 var colorChangeData = [
   [["body", ".pcr-result"], "background-color", "#202124"],
-  [[".box-label", ".color-input", ".color-box", ".style-check-container", ".fillet-100"], "background-color", "#292a2d"],
+  [[".color-input", "hr"], "border-color", "#555"],
+  [".box-label", "color", "#aaa"],
   [".pcr-button", "border-color", "#292a2d !important"],
   [".pcr-app", "background-color", "#2f3033"],
 ];
