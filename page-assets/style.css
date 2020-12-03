@@ -3,10 +3,19 @@ body {
   overflow-x: hidden;
 }
 
+::selection {
+  background: #005AFF6B;
+  color: #005AFF;
+}
+::-moz-selection {
+  background: #005AFF6B;
+  color: #005AFF;
+}
+
 h1 {
   margin-top: 0px;
   width: 100%;
-  text-align: center;
+  text-align: center; 
 }
 p {
   margin: auto;
@@ -16,8 +25,9 @@ p {
   font-size: 16px;
 }
 .box1 {
-  background: #4285f4;
-  color: #fff;
+  background: #E4EEFF;
+  border: 3px solid #4285f4;
+  color: #4285f4;
 }
 ,
 box2 {
@@ -37,6 +47,7 @@ b {
   margin-left: auto;
   margin-right: auto;
   max-width: 100%;
+  margin-top: 20px;
 }
 
 #Store-Badge-Align {
@@ -50,12 +61,24 @@ b {
   z-index: 2;
 }
 
-#andreto-site-a {
+.badge {
+  border-radius: 7px;
+  border: 1px solid #E5E5E5;
+}
+
+a {
+  color: #4285F4;
+  text-decoration: none;
+}
+a:hover{
+  text-decoration: underline;
+}
+#andreto-site-a{
   font-size: 18px;
   position: fixed;
   bottom: 0;
-  background-color: #fff;
+  background-color: #ffffff00;
+  text-decoration: none;
   width: 100%;
-  padding-bottom: 20px;
-  padding-left: 20px;
+  padding: 20px;
 }
