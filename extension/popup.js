@@ -146,8 +146,6 @@ TXTpickr.on('save', (color, instance) => {
 
 //Update Values
 chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff', 'darkreader'], function(result) {
-  updatePopupValues(highlightInput, 'highlight-color', '#ff80e4', 'highlightColor', result.highlightColor);
-  updatePopupValues(highlightTextInput, 'highlightTextColor', result.highlightTextColor);
   if(result.darkreader){changePupopTheme(colorChangeData);}
   highlightOnOff.checked = result.highlightOnOff;
   console.log(result.highlightColor + ", " + result.highlightColor);
