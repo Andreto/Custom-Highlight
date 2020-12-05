@@ -64,7 +64,7 @@ function autoTextColorSet() {
       }
       TXTpickr.setColor(rgbToHex(255-rgb.r, 255-rgb.g, 255-rgb.b));
     };
-    console.log(result.highlightAutoTextColor);
+    console.log("Auto-color: " + result.highlightAutoTextColor);
     highlightAutoTextColor.checked = result.highlightAutoTextColor;
   });
 }
@@ -146,10 +146,11 @@ TXTpickr.on('save', (color, instance) => {
 
 //Update Values
 chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff', 'darkreader'], function(result) {
-  //updatePopupValues(highlightInput, 'highlight-color', '#ff80e4', 'highlightColor', result.highlightColor);
-  //updatePopupValues(highlightTextInput, 'highlightTextColor', result.highlightTextColor);
+  updatePopupValues(highlightInput, 'highlight-color', '#ff80e4', 'highlightColor', result.highlightColor);
+  updatePopupValues(highlightTextInput, 'highlightTextColor', result.highlightTextColor);
   if(result.darkreader){changePupopTheme(colorChangeData);}
   highlightOnOff.checked = result.highlightOnOff;
+  console.log(result.highlightColor + ", " + result.highlightColor);
   BGpickr.setColor(result.highlightColor);
   TXTpickr.setColor(result.highlightTextColor);
   document.getElementsByTagName("h1")[0].style.color = result.highlightTextColor;
