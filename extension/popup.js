@@ -22,37 +22,9 @@ function hexToRgb(hex) {
 function componentToHex(c) {var hex = c.toString(16);return hex.length == 1 ? "0" + hex : hex;}
 function rgbToHex(r, g, b) {return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);}
 
-function inputUpdate(inputElem, colorElem, standardColor, storageKey){
-  var color = inputElem.value.replace("#", "");
-  if (color.length == 6 || color.length == 3 || color.length == 8){
-    color = "#" + color;
-  }else{
-    color = standardColor;
-  }
-  document.getElementById(colorElem).style.background = color;
-  inputElem.value = color;
-  var storageObj = {};
-  storageObj[storageKey] = color;
-  chrome.storage.sync.set(storageObj, function() {
-    console.log(colorElem + 'is set to ' + color);
-  });
-};
-
 highlightOnOff.onchange = function() {
   chrome.storage.sync.set({highlightOnOff: highlightOnOff.checked}, function() {});
 }
-
-function updatePopupValues(inputElem, storageKey, resultObj){
-  if(resultObj == undefined){
-    document.getElementById(colorElem).style.background = standardColor;
-    inputElem.value = standardColor;
-    var storageObj = {};
-    storageObj[storageKey] = standardColor;
-    chrome.storage.sync.set(storageObj, function() {});
-  }else{
-    inputElem.value = resultObj;
-  }
-};
 
 function autoTextColorSet() {
   chrome.storage.sync.get(['highlightColor', 'highlightAutoTextColor', 'highlightTextColor'], function(result) {
@@ -148,6 +120,8 @@ TXTpickr.on('save', (color, instance) => {
 chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff', 'darkreader'], function(result) {
   if(result.darkreader){changePupopTheme(colorChangeData);}
   highlightOnOff.checked = result.highlightOnOff;
+  highlightInput.value = result.highlightColor
+  highlightTextInput.value = result.highlightTextColor;
   console.log(result.highlightColor + ", " + result.highlightColor);
   BGpickr.setColor(result.highlightColor);
   TXTpickr.setColor(result.highlightTextColor);
