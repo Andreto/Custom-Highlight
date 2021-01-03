@@ -5,9 +5,7 @@ chrome.storage.sync.get(['highlightColor', 'highlightOnOff', 'highlightTextColor
     var element = document.createElement('style');
     element.setAttribute('id','highlightColorStyleElem');
     element.innerHTML =
-    '::selection {background:' + result.highlightColor + '; color:' + result.highlightTextColor + ';}' +
-    '::-moz-selection {background:' + result.highlightColor + '; color:' + result.highlightTextColor + ';}' +
-    '.kix-selection-overlay {background: ' + result.highlightColor + ';color:' + result.highlightTextColor + ';border-top-color:' + result.highlightColor + ';border-bottom-color:' + result.highlightColor + ';}';
+    '::selection {background:' + result.highlightColor + '; color:' + result.highlightTextColor + ';}'
     document.head.appendChild(element);
   }
 });
@@ -21,6 +19,8 @@ for (i = 0; i < document.querySelectorAll("style.darkreader").length; i++) {
 };
 
 if (document.querySelectorAll("style.darkreader").length == 0){ //Set darkreader variable
-  var darkr = false;}else{var darkr = true;
+  var darkr = false;
+}else{
+  var darkr = true;
 }
 chrome.storage.sync.set({darkreader: darkr}, function() {});
