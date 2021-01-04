@@ -12,15 +12,27 @@ chrome.storage.sync.get(['highlightColor', 'highlightOnOff', 'highlightTextColor
 
 
 //Darkreader comp
-for (i = 0; i < document.querySelectorAll("style.darkreader").length; i++) {
-  if (document.querySelectorAll("style.darkreader")[i].innerHTML.includes("::selection")) {
-    document.querySelectorAll("style.darkreader")[i].innerHTML = document.querySelectorAll("style.darkreader")[i].innerHTML.replace("::selection", "#CustomHighlight-DarkreaderSelectionReplacer");
-  }
-};
-
 if (document.querySelectorAll("style.darkreader").length == 0){ //Set darkreader variable
   var darkr = false;
 }else{
   var darkr = true;
 }
 chrome.storage.sync.set({darkreader: darkr}, function() {});
+
+if (darkr) {
+  for (i = 0; i < document.querySelectorAll("style.darkreader").length; i++) {
+    if (document.querySelectorAll("style.darkreader")[i].innerHTML.includes("::selection")) {
+      document.querySelectorAll("style.darkreader")[i].innerHTML = document.querySelectorAll("style.darkreader")[i].innerHTML.replace("::selection", "#CustomHighlight-DarkreaderSelectionReplacer");
+    }
+  }
+  window.onload = function() {
+    var sheets = document.querySelectorAll(".darkreader--sync");
+    for (let {sheet} of sheets) {
+      for (let rule of sheet.cssRules) {
+        if (rule.selectorText === "::selection") {
+          rule.style = "";
+        }
+      }
+    }
+  };
+}
