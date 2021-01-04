@@ -23,7 +23,7 @@ hr {
   color: #555;
   font-weight: bold;
   background-color: #e5e5e500;
-  width: 100px;
+  width: 200px;
   padding-bottom: 6px;
 }
 .color-input {
@@ -57,7 +57,7 @@ hr {
   background-color: #4285F4;
 }
 
-.style-check-container {
+#auto-text-check-container {
   position: absolute;
   top: 0;
   right: 0;
@@ -75,6 +75,36 @@ hr {
   display: inline;
   -webkit-transition: .4s;
 }
+.setting-check {
+  display: inline-block;
+  float: right;
+}
+.setting-label {
+  margin-top: -4px;
+}
+.setting-container {
+  margin-bottom: 8px;
+}
+
+.setting-label:after {
+  vertical-align: text-top;
+  overflow: hidden;
+  text-align: center;
+  display: inline-block;
+  padding-bottom: 2px;
+  width: 10px;
+  height: 8px;
+  border-radius: 50%;
+  content: "i";
+  color: #555;
+  margin-left: 5px;
+  font-size: 10px;
+  border-radius: 50%;
+  background: #555;
+  color: #fff;
+}
+
+
 .fillet-100 {
   background-color: #e5e5e5;
   width: 200px;
