@@ -2,9 +2,14 @@ var highlightInput = document.getElementById('highlight-input');
 var highlightTextInput = document.getElementById('highlight-text-input');
 var highlightOnOff = document.getElementById('highlight-on-off');
 var highlightAutoTextColor = document.getElementById('highlight-auto-text')
+var dynamicDarkColor = document.getElementById('dynamic-dark-color')
+var aggressiveOverwrite = document.getElementById('aggressive-overwrite')
+
 var standardColor = "#FFA500"
 var standardTextColor = "#005AFF"
 
+
+//Document Changes
 document.addEventListener('DOMContentLoaded', function () {
   for (const anchor of document.getElementsByTagName('a')) {
     anchor.onclick = () => {
@@ -53,7 +58,7 @@ function changePupopTheme(){
 var colorChangeData = [
   [["body", ".pcr-result"], "background-color", "#202124"],
   [[".color-input", "hr"], "border-color", "#555"],
-  [".box-label", "color", "#aaa"],
+  [[".box-label", ".setting-label", ".info-link-small"], "color", "#aaa"],
   [".pcr-button", "border-color", "#292a2d !important"],
   [".pcr-app", "background-color", "#2f3033"],
 ];
@@ -63,6 +68,14 @@ highlightAutoTextColor.onchange = function() {
   chrome.storage.sync.set({highlightAutoTextColor: highlightAutoTextColor.checked}, function() {});
   autoTextColorSet();
 }
+
+dynamicDarkColor.onchange = function() {
+  chrome.storage.sync.set({highlightDynamicDarkColor: dynamicDarkColor.checked}, function() {});
+}
+aggressiveOverwrite.onchange = function() {
+  chrome.storage.sync.set({highlightAggressiveOverwrite: aggressiveOverwrite.checked}, function() {});
+}
+
 
 
 // Pickr - color picker
@@ -117,9 +130,11 @@ TXTpickr.on('save', (color, instance) => {
 
 
 //Update Values
-chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff', 'darkreader'], function(result) {
+chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff', 'darkreader', 'highlightDynamicDarkColor', 'highlightAggressiveOverwrite'], function(result) {
   if(result.darkreader){changePupopTheme(colorChangeData);}
   highlightOnOff.checked = result.highlightOnOff;
+  dynamicDarkColor.checked = result.highlightDynamicDarkColor;
+  aggressiveOverwrite.checked = result.highlightAggressiveOverwrite;
   highlightInput.value = result.highlightColor
   highlightTextInput.value = result.highlightTextColor;
   console.log(result.highlightColor + ", " + result.highlightColor);
