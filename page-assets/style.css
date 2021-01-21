@@ -29,9 +29,6 @@ p {
   border: 3px solid #4285f4;
   color: #4285f4;
 }
-,
-box2 {
-}
 b {
   font-size: 18px;
 }
@@ -87,5 +84,5 @@ a:hover{
   display: block;
   margin-left: auto;
   margin-right: auto;
-  margin-top: -80px;
+  margin-top: -40px;
 }
