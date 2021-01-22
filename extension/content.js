@@ -28,28 +28,32 @@ chrome.storage.sync.get(['highlightColor', 'highlightOnOff', 'highlightTextColor
 
     //Overwrite dark-reader
     if (darkr) {
-      if (!result.highlightDynamicDarkColor) {
-        //Removes late injects
-        window.addEventListener('load', (event) => {
-          var sheets = document.querySelectorAll(".darkreader");
-          for (let {sheet} of sheets) {
-            try {
-              for (let rule of sheet.cssRules) {
-                if (rule.selectorText.includes("::selection")) {
-                  rule.selectorText = rule.selectorText.replace("::selection", "#CustomHighlight-DarkreaderSelectionReplacer");
-                }
-              }
-            } catch (error) {
-            }
-          }
-        });
-      } else {
-        for (i = 0; i < document.querySelectorAll("style.darkreader").length; i++) {
-          if (document.querySelectorAll("style.darkreader")[i].innerHTML.includes("::selection")) {
-            document.querySelectorAll("style.darkreader")[i].innerHTML = document.querySelectorAll("style.darkreader")[i].innerHTML.replace("::selection", "#CustomHighlight-DarkreaderSelectionReplacer");
-          }
+      //Remove early, easy to reach injects
+      for (i = 0; i < document.querySelectorAll("style.darkreader").length; i++) {
+        if (document.querySelectorAll("style.darkreader")[i].innerHTML.includes("::selection")) {
+          document.querySelectorAll("style.darkreader")[i].innerHTML = document.querySelectorAll("style.darkreader")[i].innerHTML.replace("::selection", "#CustomHighlight-DarkreaderSelectionReplacer");
         }
       }
+      var darkreaderRemove;
+      if (result.highlightDynamicDarkColor) {
+        darkreaderRemove = ".darkreader--user-agent";
+      } else {
+        darkreaderRemove = ".darkreader";
+      }
+      //Removes late injects
+      window.addEventListener('load', (event) => {
+        var sheets = document.querySelectorAll(darkreaderRemove);
+        for (let {sheet} of sheets) {
+          try {
+            for (let rule of sheet.cssRules) {
+              if (rule.selectorText.includes("::selection")) {
+                rule.selectorText = rule.selectorText.replace("::selection", "#CustomHighlight-DarkreaderSelectionReplacer");
+              }
+            }
+          } catch (error) {
+          }
+        }
+      });
     }
   }
 });
