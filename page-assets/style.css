@@ -62,6 +62,10 @@ b {
   border-radius: 7px;
   border: 1px solid #E5E5E5;
 }
+#github-arrow {
+  margin-top: 4px;
+  width: 180px;
+}
 
 a {
   color: #4285F4;
