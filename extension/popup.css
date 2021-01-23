@@ -39,6 +39,10 @@ hr {
   color: #555;
   font-size: 16px;
 }
+.color-input.white + .pickr button::after {
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+}
 .color-box {
   margin: 0;
   width: 192px;

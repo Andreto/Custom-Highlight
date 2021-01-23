@@ -8,7 +8,6 @@ var aggressiveOverwrite = document.getElementById('aggressive-overwrite')
 var standardColor = "#FFA500"
 var standardTextColor = "#005AFF"
 
-
 //Document Changes
 document.addEventListener('DOMContentLoaded', function () {
   for (const anchor of document.getElementsByTagName('a')) {
@@ -115,6 +114,13 @@ BGpickr.on('save', (color, instance) => {
     console.log('save', color, instance, 'color');
     chrome.storage.sync.set({highlightColor: color.toHEXA().toString()}, function() {});
     highlightInput.value = color.toHEXA().toString();
+    highlightInput.style.borderColor = color.toHEXA().toString().substring(0, 7);
+    if (color.v > 87 && color.s < 13) {
+      highlightInput.style.borderColor = "#ddd";
+      highlightInput.classList.add("white");
+    } else {
+      highlightInput.classList.remove("white");
+    }
     autoTextColorSet();
     document.getElementsByTagName("h1")[0].style.background = color.toHEXA().toString();
 });
@@ -123,6 +129,13 @@ TXTpickr.on('save', (color, instance) => {
     chrome.storage.sync.get(['highlightTextColor'], function(result) { if (result.highlightTextColor !== color.toHEXA().toString()){
       chrome.storage.sync.set({highlightTextColor: color.toHEXA().toString(), highlightAutoTextColor: false}, function() {});
       highlightTextInput.value = color.toHEXA().toString();
+      highlightTextInput.style.borderColor = color.toHEXA().toString().substring(0, 7);
+      if (color.v > 87 && color.s < 13) {
+        highlightTextInput.style.borderColor = "#ddd";
+        highlightTextInput.classList.add("white");
+      } else {
+        highlightTextInput.classList.remove("white");
+      }
       highlightAutoTextColor.checked = false;
     }});
     document.getElementsByTagName("h1")[0].style.color = color.toHEXA().toString();
