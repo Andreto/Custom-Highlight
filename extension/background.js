@@ -10,7 +10,9 @@ chrome.runtime.onInstalled.addListener(function(details){
           highlightTextColor: "#005AFF",
           highlightAutoTextColor: true,
           highlightOnOff: true,
-          darkreader: false
+          darkreader: false,
+          highlightDynamicDarkColor: true,
+          highlightAggressiveOverwrite: false
         },
         function() {});
       }
