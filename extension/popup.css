@@ -1,3 +1,7 @@
+:root {
+  --ui-accent-color: #4285F4;
+}
+
 body {
   margin: 0;
   width: 200px;
@@ -72,6 +76,7 @@ hr {
   height: 16px;
   display: inline;
   transition: .4s;
+  cursor: pointer;
 }
 .style-check-label {
   color: #555;
@@ -173,8 +178,8 @@ select {
 }
 
 .switch-check:checked + .slider {
-  background-color: #4285F4;
-  border: 1px solid #4285F4;;
+  background-color: var(--ui-accent-color, #4285F4);
+  border: 1px solid var(--ui-accent-color, #4285F4);
 }
 
 .switch-check:checked + .slider:before {

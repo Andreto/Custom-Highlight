@@ -4,6 +4,7 @@ var highlightOnOff = document.getElementById('highlight-on-off');
 var highlightAutoTextColor = document.getElementById('highlight-auto-text')
 var dynamicDarkColor = document.getElementById('dynamic-dark-color')
 var aggressiveOverwrite = document.getElementById('aggressive-overwrite')
+var root = document.documentElement;
 
 var standardColor = "#FFA500"
 var standardTextColor = "#005AFF"
@@ -75,7 +76,26 @@ aggressiveOverwrite.onchange = function() {
   chrome.storage.sync.set({highlightAggressiveOverwrite: aggressiveOverwrite.checked}, function() {});
 }
 
-
+function updateUiColors(elem, color) {
+  elem.value = color.toHEXA().toString();
+  elem.style.borderColor = color.toHEXA().toString().substring(0, 7);
+  if (color.v > 87 && color.s < 13) {
+    elem.style.borderColor = "#ddd";
+    elem.classList.add("white");
+  } else {
+    elem.classList.remove("white");
+  }
+  if (elem == highlightInput) {
+    if (color.v < 60 || color.s > 30) {
+      root.style.setProperty("--ui-accent-color", color.toHEXA().toString().substring(0, 7));
+    } else {
+      var txtColor = TXTpickr.getColor();
+      if (txtColor.v < 60 || txtColor.s > 30) {
+        root.style.setProperty("--ui-accent-color", txtColor.toHEXA().toString().substring(0, 7));
+      }
+    }
+  }
+}
 
 // Pickr - color picker
 var pickrComponents = {
@@ -113,14 +133,7 @@ const TXTpickr = Pickr.create({
 BGpickr.on('save', (color, instance) => {
     console.log('save', color, instance, 'color');
     chrome.storage.sync.set({highlightColor: color.toHEXA().toString()}, function() {});
-    highlightInput.value = color.toHEXA().toString();
-    highlightInput.style.borderColor = color.toHEXA().toString().substring(0, 7);
-    if (color.v > 87 && color.s < 13) {
-      highlightInput.style.borderColor = "#ddd";
-      highlightInput.classList.add("white");
-    } else {
-      highlightInput.classList.remove("white");
-    }
+    updateUiColors(highlightInput, color);
     autoTextColorSet();
     document.getElementsByTagName("h1")[0].style.background = color.toHEXA().toString();
 });
@@ -128,15 +141,8 @@ TXTpickr.on('save', (color, instance) => {
     console.log('save', color, instance, 'txt');
     chrome.storage.sync.get(['highlightTextColor'], function(result) { if (result.highlightTextColor !== color.toHEXA().toString()){
       chrome.storage.sync.set({highlightTextColor: color.toHEXA().toString(), highlightAutoTextColor: false}, function() {});
-      highlightTextInput.value = color.toHEXA().toString();
-      highlightTextInput.style.borderColor = color.toHEXA().toString().substring(0, 7);
-      if (color.v > 87 && color.s < 13) {
-        highlightTextInput.style.borderColor = "#ddd";
-        highlightTextInput.classList.add("white");
-      } else {
-        highlightTextInput.classList.remove("white");
-      }
       highlightAutoTextColor.checked = false;
+      updateUiColors(highlightTextInput, color);
     }});
     document.getElementsByTagName("h1")[0].style.color = color.toHEXA().toString();
 });
