@@ -139,10 +139,10 @@ BGpickr.on('save', (color, instance) => {
 });
 TXTpickr.on('save', (color, instance) => {
     console.log('save', color, instance, 'txt');
+    updateUiColors(highlightTextInput, color);
     chrome.storage.sync.get(['highlightTextColor'], function(result) { if (result.highlightTextColor !== color.toHEXA().toString()){
       chrome.storage.sync.set({highlightTextColor: color.toHEXA().toString(), highlightAutoTextColor: false}, function() {});
       highlightAutoTextColor.checked = false;
-      updateUiColors(highlightTextInput, color);
     }});
     document.getElementsByTagName("h1")[0].style.color = color.toHEXA().toString();
 });
@@ -156,7 +156,7 @@ chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff
   aggressiveOverwrite.checked = result.highlightAggressiveOverwrite;
   highlightInput.value = result.highlightColor
   highlightTextInput.value = result.highlightTextColor;
-  console.log(result.highlightColor + ", " + result.highlightColor);
+  console.log(result.highlightColor + ", " + result.highlightTextColor);
   BGpickr.setColor(result.highlightColor);
   TXTpickr.setColor(result.highlightTextColor);
   document.getElementsByTagName("h1")[0].style.color = result.highlightTextColor;

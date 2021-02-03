@@ -25,7 +25,10 @@
       <div class="box-label">Text Color</div>
       <div class="style-check-container" id="auto-text-check-container">
         <div class="style-check-label">Auto</div>
-        <input type="checkbox" class="style-check" id="highlight-auto-text">
+        <label class="check-container">
+          <input class="check-box" type="checkbox" checked="checked" id="highlight-auto-text">
+          <span class="check-mark"></span>
+        </label>
       </div>
       <div class="color-input-box">
         <input type="text" id="highlight-text-input" class="color-input" value="#005AFF" maxlength="9" readonly>
@@ -41,11 +44,17 @@
       <div class="expand-item" id="advanced-settings">
         <div class="setting-container">
           <span class="setting-label">Dynamic color (Dark Reader)</span>
-          <input type="checkbox" class="style-check setting-check" id="dynamic-dark-color">
+          <label class="check-container">
+            <input class="check-box" type="checkbox" checked="checked" id="dynamic-dark-color">
+            <span class="check-mark"></span>
+          </label>
         </div>
         <div class="setting-container">
           <span class="setting-label">Aggressive overwrite</span>
-          <input type="checkbox" class="style-check setting-check" id="aggressive-overwrite">
+          <label class="check-container">
+            <input class="check-box" type="checkbox" checked="checked" id="aggressive-overwrite">
+            <span class="check-mark"></span>
+          </label>
         </div>
       </div>
     </div>
