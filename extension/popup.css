@@ -130,6 +130,15 @@ select {
   color: #777777;
 }
 
+/* Exchange button */
+#exchange-button {
+  width: 20px;
+  position: absolute;
+  top: -6px;
+  right: 0;
+  cursor: pointer;
+}
+
 
 /*Togle Switch*/
 .switch {

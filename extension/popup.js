@@ -1,9 +1,10 @@
 var highlightInput = document.getElementById('highlight-input');
 var highlightTextInput = document.getElementById('highlight-text-input');
 var highlightOnOff = document.getElementById('highlight-on-off');
-var highlightAutoTextColor = document.getElementById('highlight-auto-text')
-var dynamicDarkColor = document.getElementById('dynamic-dark-color')
-var aggressiveOverwrite = document.getElementById('aggressive-overwrite')
+var highlightAutoTextColor = document.getElementById('highlight-auto-text');
+var dynamicDarkColor = document.getElementById('dynamic-dark-color');
+var aggressiveOverwrite = document.getElementById('aggressive-overwrite');
+var exchangeButton = document.getElementById('exchange-button');
 var root = document.documentElement;
 
 var standardColor = "#FFA500"
@@ -147,6 +148,15 @@ TXTpickr.on('save', (color, instance) => {
     document.getElementsByTagName("h1")[0].style.color = color.toHEXA().toString();
 });
 
+function exchangeColors() {
+  var bgColor = BGpickr.getColor().toHEXA().toString();
+  var txtColor = TXTpickr.getColor().toHEXA().toString();
+  BGpickr.setColor(txtColor);
+  TXTpickr.setColor(bgColor);
+}
+exchangeButton.onclick = function() {
+  exchangeColors();
+}
 
 //Update Values
 chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff', 'darkreader', 'highlightDynamicDarkColor', 'highlightAggressiveOverwrite'], function(result) {
