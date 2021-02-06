@@ -78,13 +78,21 @@ aggressiveOverwrite.onchange = function() {
 }
 
 function updateUiColors(elem, color) {
+  if (elem == highlightInput) {
+    var cssProperty = "--highlight-bck-color";
+  } else if (elem == highlightTextInput) {
+    var cssProperty = "--highlight-txt-color";
+  }
+
   elem.value = color.toHEXA().toString();
   elem.style.borderColor = color.toHEXA().toString().substring(0, 7);
   if (color.v > 87 && color.s < 13) {
     elem.style.borderColor = "#ddd";
     elem.classList.add("white");
+    root.style.setProperty(cssProperty, "#ddd");
   } else {
     elem.classList.remove("white");
+    root.style.setProperty(cssProperty, color.toHEXA().toString().substring(0, 7));
   }
   if (elem == highlightInput) {
     if (color.v < 60 || color.s > 30) {
