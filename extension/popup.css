@@ -172,7 +172,7 @@ select {
   right: 0;
   bottom: 0;
   background-color: #ffffff00;
-  border: 1px solid #aaa;
+  border: 2px solid #ccc;
   box-sizing: border-box;
   transition: .4s;
 }
@@ -182,15 +182,15 @@ select {
   content: "";
   height: 12px;
   width: 12px;
-  left: 4px;
-  bottom: 3px;
-  background-color: #aaa;
+  left: 3px;
+  bottom: 2px;
+  background-color: #ccc;
   transition: .4s;
 }
 
 .switch-check:checked + .slider {
   background-color: var(--ui-accent-color, #4285F4);
-  border: 1px solid var(--ui-accent-color, #4285F4);
+  border: 2px solid var(--ui-accent-color, #4285F4);
 }
 
 .switch-check:checked + .slider:before {
