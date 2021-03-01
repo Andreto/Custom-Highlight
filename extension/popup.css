@@ -15,6 +15,7 @@ h1 {
   margin-bottom: 0;
   color: #fff;
   background-color: #ff1c6b;
+  transition: .4s;
 }
 hr {
   border: none;
@@ -44,6 +45,7 @@ hr {
   border-radius: 5px;
   color: #555;
   font-size: 16px;
+  transition: .4s;
 }
 .color-input.white + .pickr button::after {
   border: 1px solid #ddd;
@@ -116,6 +118,7 @@ hr {
   margin: 0 14px;
   color: var(--ui-accent-color, #4285F4);
   text-decoration: none;
+  transition: .4s;
 }
 .ftr-item:hover {
   text-decoration: underline;
@@ -142,9 +145,11 @@ select {
 }
 .exchange-button-1 {
   stroke: var(--highlight-txt-color, #21252B);
+  transition: .4s;
 }
 .exchange-button-2 {
   stroke: var(--highlight-bck-color, #333842);
+  transition: .4s;
 }
 
 
