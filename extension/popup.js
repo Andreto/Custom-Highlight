@@ -106,6 +106,11 @@ function updateUiColors(elem, color) {
   }
 }
 
+function injectCurrentTabs() {
+  var cssString ='::selection {background:' + TXTpickr.getColor().toHEXA().toString() + ' !important; color:' + TXTpickr.getColor().toHEXA().toString() + ' !important;}';
+  chrome.scripting.insertCSS(cssString);
+}
+
 // Pickr - color picker
 var pickrComponents = {
     preview: true,
