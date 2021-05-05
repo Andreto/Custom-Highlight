@@ -48,21 +48,9 @@ function autoTextColorSet() {
 }
 
 //Set page colors //Uses gh -> andreto/css-change
-function changePupopTheme(){
-  for (i=0; i < colorChangeData.length; i++){
-    var elements = document.querySelectorAll(colorChangeData[i][0]);
-    for (var ii = 0; ii < elements.length; ii++) {
-    	elements[ii].style = (colorChangeData[i][1] + ": " + colorChangeData[i][2] + ";");
-    }
-  }
+function changePopupTheme(){
+  root.classList.add("dark-ui");
 }
-var colorChangeData = [
-  [["body", ".pcr-result"], "background-color", "#202124"],
-  [[".color-input", "hr"], "border-color", "#555"],
-  [[".box-label", ".setting-label", ".info-link-small"], "color", "#aaa"],
-  [".pcr-button", "border-color", "#292a2d !important"],
-  [".pcr-app", "background-color", "#2f3033"],
-];
 
 autoTextColorSet();
 highlightAutoTextColor.onchange = function() {
@@ -173,7 +161,7 @@ exchangeButton.onclick = function() {
 
 //Update Values
 chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff', 'darkreader', 'highlightDynamicDarkColor', 'highlightAggressiveOverwrite'], function(result) {
-  if(result.darkreader){changePupopTheme(colorChangeData);}
+  if(result.darkreader){changePopupTheme(colorChangeData);}
   highlightOnOff.checked = result.highlightOnOff;
   dynamicDarkColor.checked = result.highlightDynamicDarkColor;
   aggressiveOverwrite.checked = result.highlightAggressiveOverwrite;
