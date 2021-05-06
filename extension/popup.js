@@ -161,7 +161,7 @@ exchangeButton.onclick = function() {
 
 //Update Values
 chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff', 'darkreader', 'highlightDynamicDarkColor', 'highlightAggressiveOverwrite'], function(result) {
-  if(result.darkreader){changePopupTheme(colorChangeData);}
+  if(result.darkreader){changePopupTheme();}
   highlightOnOff.checked = result.highlightOnOff;
   dynamicDarkColor.checked = result.highlightDynamicDarkColor;
   aggressiveOverwrite.checked = result.highlightAggressiveOverwrite;

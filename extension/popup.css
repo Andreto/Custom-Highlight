@@ -8,16 +8,18 @@
   --ui-text-light: #777;
   --ui-border: #ddd;
   --ui-button: #ccc;
+  --ui-pcr-background: #fff;
+  --ui-pcr-input: #F1F3F4;
 }
 
 :root.dark-ui {
-  --ui-background: #282C34;
+  --ui-background: #181818;
   --ui-text: #b4b4b4;
   --ui-text-light: #4D4F52;
-  --ui-border: #b4b4b4;
-  --ui-button: #3E4451;
-  --ui-pcr-background: #1B1D23;
-  --ui-pcr-input: #282C34;
+  --ui-border: #535353;
+  --ui-button: #535353;
+  --ui-pcr-background: #282828;
+  --ui-pcr-input: var(--ui-background);
 }
 
 body {
