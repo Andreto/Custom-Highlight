@@ -10,6 +10,8 @@ var root = document.documentElement;
 var standardColor = "#FFA500"
 var standardTextColor = "#005AFF"
 
+var editHistory = [];
+
 //Document Changes
 document.addEventListener('DOMContentLoaded', function () {
   for (const anchor of document.getElementsByTagName('a')) {
@@ -17,6 +19,18 @@ document.addEventListener('DOMContentLoaded', function () {
       chrome.tabs.create({active: true, url: anchor.href});
     };
   };
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key == 'z' && event.ctrlKey) {
+    var edit = editHistory[editHistory.length-1];
+    if (edit.code == 0) {
+      BGpickr.setColor(edit.val);
+    }
+    if (edit.code == 1) {
+      TXTpickr.setColor(edit.val);
+    }
+  }
 });
 
 function hexToRgb(hex) {
@@ -101,52 +115,54 @@ function injectCurrentTabs() {
 
 // Pickr - color picker
 var pickrComponents = {
-    preview: true,
-    opacity: true,
-    hue: true,
-    interaction: {
-        hex: false,
-        rgba: false,
-        hsla: false,
-        hsva: false,
-        cmyk: false,
-        input: true,
-        clear: false,
-        save: true
-    }
+  preview: true,
+  opacity: true,
+  hue: true,
+  interaction: {
+    hex: false,
+    rgba: false,
+    hsla: false,
+    hsva: false,
+    cmyk: false,
+    input: true,
+    clear: false,
+    save: true
+  }
 }
 
 const BGpickr = Pickr.create({
-    el: '.color-picker-bg',
-    theme: 'nano',
-    default: '#f18458',
-    defaultRepresentation: 'HEX',
-    components: pickrComponents
+  el: '.color-picker-bg',
+  theme: 'nano',
+  default: '#f18458',
+  defaultRepresentation: 'HEX',
+  components: pickrComponents
 });
 
 const TXTpickr = Pickr.create({
-    el: '.color-picker-txt',
-    theme: 'nano',
-    default: '#ffffff',
-    defaultRepresentation: 'HEX',
-    components: pickrComponents
+  el: '.color-picker-txt',
+  theme: 'nano',
+  default: '#ffffff',
+  defaultRepresentation: 'HEX',
+  components: pickrComponents
 });
 
 BGpickr.on('save', (color, instance) => {
-    console.log('save', color, instance, 'color');
-    chrome.storage.sync.set({highlightColor: color.toHEXA().toString()}, function() {});
-    updateUiColors(highlightInput, color);
-    autoTextColorSet();
-    document.getElementsByTagName("h1")[0].style.background = color.toHEXA().toString();
+  editHistory.push({"code": 0, "val": highlightInput.value});
+  console.log('save', color, instance, 'color');
+  chrome.storage.sync.set({highlightColor: color.toHEXA().toString()}, function() {});
+  updateUiColors(highlightInput, color);
+  autoTextColorSet();
+  document.getElementsByTagName("h1")[0].style.background = color.toHEXA().toString();
 });
 TXTpickr.on('save', (color, instance) => {
-    console.log('save', color, instance, 'txt');
-    updateUiColors(highlightTextInput, color);
-    chrome.storage.sync.get(['highlightTextColor'], function(result) { if (result.highlightTextColor !== color.toHEXA().toString()){
-      chrome.storage.sync.set({highlightTextColor: color.toHEXA().toString(), highlightAutoTextColor: false}, function() {});
-      highlightAutoTextColor.checked = false;
-    }});
-    document.getElementsByTagName("h1")[0].style.color = color.toHEXA().toString();
+  editHistory.push({"code": 1, "val": highlightTextInput.value});
+  console.log('save', color, instance, 'txt');
+  updateUiColors(highlightTextInput, color);
+  chrome.storage.sync.get(['highlightTextColor'], function(result) { if (result.highlightTextColor !== color.toHEXA().toString()){
+    chrome.storage.sync.set({highlightTextColor: color.toHEXA().toString(), highlightAutoTextColor: false}, function() {});
+    highlightAutoTextColor.checked = false;
+  }});
+  document.getElementsByTagName("h1")[0].style.color = color.toHEXA().toString();
 });
 
 function exchangeColors() {
