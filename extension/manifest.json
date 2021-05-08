@@ -9,7 +9,13 @@
   "action": {
    "default_popup": "popup.html"
   },
-  "permissions": ["storage", "scripting"],
+  "permissions": [
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "content_scripts": [{
     "matches": ["<all_urls>"],
     "js": ["content.js"]

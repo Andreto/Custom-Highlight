@@ -82,8 +82,12 @@ aggressiveOverwrite.onchange = function() {
 function updateUiColors(elem, color) {
   if (elem == highlightInput) {
     var cssProperty = "--highlight-bck-color";
+    var txtColor = TXTpickr.getColor();
+    var bgColor = color;
   } else if (elem == highlightTextInput) {
     var cssProperty = "--highlight-txt-color";
+    var txtColor = color;
+    var bgColor = BGpickr.getColor();
   }
 
   elem.value = color.toHEXA().toString();
@@ -96,14 +100,12 @@ function updateUiColors(elem, color) {
     elem.classList.remove("white");
     root.style.setProperty(cssProperty, color.toHEXA().toString().substring(0, 7));
   }
-  if (elem == highlightInput) {
-    if (color.v < 60 || color.s > 30) {
-      root.style.setProperty("--ui-accent-color", color.toHEXA().toString().substring(0, 7));
-    } else {
-      var txtColor = TXTpickr.getColor();
-      if (txtColor.v < 60 || txtColor.s > 30) {
-        root.style.setProperty("--ui-accent-color", txtColor.toHEXA().toString().substring(0, 7));
-      }
+
+  if (bgColor.v < 60 || bgColor.s > 30) {
+    root.style.setProperty("--ui-accent-color", bgColor.toHEXA().toString().substring(0, 7));
+  } else {
+    if (txtColor.v < 60 || txtColor.s > 30) {
+      root.style.setProperty("--ui-accent-color", txtColor.toHEXA().toString().substring(0, 7));
     }
   }
 }
@@ -153,6 +155,7 @@ BGpickr.on('save', (color, instance) => {
   updateUiColors(highlightInput, color);
   autoTextColorSet();
   document.getElementsByTagName("h1")[0].style.background = color.toHEXA().toString();
+  updateTabs()
 });
 TXTpickr.on('save', (color, instance) => {
   editHistory.push({"code": 1, "val": highlightTextInput.value});
@@ -163,6 +166,7 @@ TXTpickr.on('save', (color, instance) => {
     highlightAutoTextColor.checked = false;
   }});
   document.getElementsByTagName("h1")[0].style.color = color.toHEXA().toString();
+  updateTabs()
 });
 
 function exchangeColors() {
@@ -189,3 +193,20 @@ chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff
   document.getElementsByTagName("h1")[0].style.color = result.highlightTextColor;
   document.getElementsByTagName("h1")[0].style.background = result.highlightColor;
 });
+
+function updateTabs() {
+  chrome.tabs.query({}, function(result) {
+    for (let i = 0; i < result.length; i++) {
+      console.log(result[i].id);
+      chrome.scripting.removeCSS({
+        target: {tabId: result[i].id}, 
+        css: '::selection {background: #434343 !important;color: #4153FF !important;}'
+      }, function() {
+        chrome.scripting.insertCSS({
+          target: {tabId: result[i].id}, 
+          css: '::selection {background:' + highlightInput.value + ' !important; color:' + highlightTextInput.value + ' !important;}' + '.kix-selection-overlay {background: ' + highlightInput.value + ';color:' + highlightTextInput.value + ';border-top-color:' + highlightInput.value + ';border-bottom-color:' + highlightInput.value + ';}'
+        });
+      });
+    }
+  });
+}
