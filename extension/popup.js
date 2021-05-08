@@ -155,7 +155,7 @@ BGpickr.on('save', (color, instance) => {
   updateUiColors(highlightInput, color);
   autoTextColorSet();
   document.getElementsByTagName("h1")[0].style.background = color.toHEXA().toString();
-  updateTabs()
+  updateCurrentTab()
 });
 TXTpickr.on('save', (color, instance) => {
   editHistory.push({"code": 1, "val": highlightTextInput.value});
@@ -166,7 +166,7 @@ TXTpickr.on('save', (color, instance) => {
     highlightAutoTextColor.checked = false;
   }});
   document.getElementsByTagName("h1")[0].style.color = color.toHEXA().toString();
-  updateTabs()
+  updateCurrentTab()
 });
 
 function exchangeColors() {
@@ -194,18 +194,12 @@ chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff
   document.getElementsByTagName("h1")[0].style.background = result.highlightColor;
 });
 
-function updateTabs() {
-  chrome.tabs.query({}, function(result) {
+function updateCurrentTab() {
+  chrome.tabs.query({active: true}, function(result) {
     for (let i = 0; i < result.length; i++) {
-      console.log(result[i].id);
-      chrome.scripting.removeCSS({
+      chrome.scripting.insertCSS({
         target: {tabId: result[i].id}, 
-        css: '::selection {background: #434343 !important;color: #4153FF !important;}'
-      }, function() {
-        chrome.scripting.insertCSS({
-          target: {tabId: result[i].id}, 
-          css: '::selection {background:' + highlightInput.value + ' !important; color:' + highlightTextInput.value + ' !important;}' + '.kix-selection-overlay {background: ' + highlightInput.value + ';color:' + highlightTextInput.value + ';border-top-color:' + highlightInput.value + ';border-bottom-color:' + highlightInput.value + ';}'
-        });
+        css: '::selection { --cws-custom-highlight-bg:' + highlightInput.value + ';--cws-custom-highlight-txt:' + highlightTextInput.value + ';}'
       });
     }
   });
