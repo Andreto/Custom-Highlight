@@ -1,3 +1,5 @@
+// --- Variable declaration --- //
+
 var highlightInput = document.getElementById('highlight-input');
 var highlightTextInput = document.getElementById('highlight-text-input');
 var highlightOnOff = document.getElementById('highlight-on-off');
@@ -10,10 +12,11 @@ var root = document.documentElement;
 var standardColor = "#FFA500"
 var standardTextColor = "#005AFF"
 
-var editHistory = [];
+var editHistory;
 
-//Document Changes
-document.addEventListener('DOMContentLoaded', function () {
+// --- Event Listeners --- //
+
+document.addEventListener('DOMContentLoaded', function() {
   for (const anchor of document.getElementsByTagName('a')) {
     anchor.onclick = () => {
       chrome.tabs.create({active: true, url: anchor.href});
@@ -23,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener("keydown", event => {
   if (event.key == 'z' && event.ctrlKey) {
-    var edit = editHistory[editHistory.length-1];
+    var edit = editHistory;
     if (edit.code == 0) {
       BGpickr.setColor(edit.val);
     }
@@ -32,6 +35,39 @@ document.addEventListener("keydown", event => {
     }
   }
 });
+
+highlightOnOff.addEventListener("change", function() {
+  chrome.storage.sync.set({highlightOnOff: highlightOnOff.checked}, function() {});
+});
+
+dynamicDarkColor.addEventListener("change", function() {
+  chrome.storage.sync.set({highlightDynamicDarkColor: dynamicDarkColor.checked}, function() {});
+});
+
+aggressiveOverwrite.addEventListener("change", function() {
+  chrome.storage.sync.set({highlightAggressiveOverwrite: aggressiveOverwrite.checked}, function() {});
+});
+
+exchangeButton.addEventListener("click", function() {
+  exchangeColors();
+});
+
+highlightAutoTextColor.addEventListener("change", function() {
+  console.log("set", highlightAutoTextColor.checked);
+  chrome.storage.sync.set({highlightAutoTextColor: highlightAutoTextColor.checked}, function() {
+    autoTextColorSet();
+  });
+});
+
+// --- Page functions --- //
+
+// Flip BG and TXT colors
+function exchangeColors() {
+  var bgColor = BGpickr.getColor().toHEXA().toString();
+  var txtColor = TXTpickr.getColor().toHEXA().toString();
+  BGpickr.setColor(txtColor);
+  TXTpickr.setColor(bgColor);
+}
 
 function hexToRgb(hex) {
     var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -42,21 +78,17 @@ function hexToRgb(hex) {
 function componentToHex(c) {var hex = c.toString(16);return hex.length == 1 ? "0" + hex : hex;}
 function rgbToHex(r, g, b) {return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);}
 
-highlightOnOff.onchange = function() {
-  chrome.storage.sync.set({highlightOnOff: highlightOnOff.checked}, function() {});
-}
 
 function autoTextColorSet() {
   chrome.storage.sync.get(['highlightColor', 'highlightAutoTextColor', 'highlightTextColor'], function(result) {
     if (result.highlightAutoTextColor) {
       var rgb = hexToRgb(result.highlightColor.substring(0, 7));
-      highlightTextInput.value = (rgbToHex(255-rgb.r, 255-rgb.g, 255-rgb.b)).toUpperCase();
-      if (result.highlightTextColor !== highlightTextInput.value){
-        chrome.storage.sync.set({highlightTextColor: highlightTextInput.value}, function() {});
-      }
-      TXTpickr.setColor(rgbToHex(255-rgb.r, 255-rgb.g, 255-rgb.b));
+      var inverseColor = rgbToHex(255-rgb.r, 255-rgb.g, 255-rgb.b);
+      chrome.storage.sync.set({highlightTextColor: inverseColor}, function() {
+        TXTpickr.setColor(inverseColor);
+      });
     };
-    console.log("Auto-color: " + result.highlightAutoTextColor);
+    console.log(result.highlightAutoTextColor);
     highlightAutoTextColor.checked = result.highlightAutoTextColor;
   });
 }
@@ -66,18 +98,6 @@ function changePopupTheme(){
   root.classList.add("dark-ui");
 }
 
-autoTextColorSet();
-highlightAutoTextColor.onchange = function() {
-  chrome.storage.sync.set({highlightAutoTextColor: highlightAutoTextColor.checked}, function() {});
-  autoTextColorSet();
-}
-
-dynamicDarkColor.onchange = function() {
-  chrome.storage.sync.set({highlightDynamicDarkColor: dynamicDarkColor.checked}, function() {});
-}
-aggressiveOverwrite.onchange = function() {
-  chrome.storage.sync.set({highlightAggressiveOverwrite: aggressiveOverwrite.checked}, function() {});
-}
 
 function updateUiColors(elem, color) {
   if (elem == highlightInput) {
@@ -110,12 +130,20 @@ function updateUiColors(elem, color) {
   }
 }
 
-function injectCurrentTabs() {
-  var cssString ='::selection {background:' + TXTpickr.getColor().toHEXA().toString() + ' !important; color:' + TXTpickr.getColor().toHEXA().toString() + ' !important;}';
-  chrome.scripting.insertCSS(cssString);
+function updateCurrentTab() {
+  chrome.tabs.query({}, function(result) {
+    for (let i = 0; i < result.length; i++) {
+      if (result[i].url){
+        chrome.scripting.insertCSS({
+          target: {tabId: result[i].id}, 
+          css: '::selection { --cws-custom-highlight-bg:' + highlightInput.value + ';--cws-custom-highlight-txt:' + highlightTextInput.value + ';}'
+        });
+      }
+    }
+  });
 }
 
-// Pickr - color picker
+// --- Pickr, color picker --- //
 var pickrComponents = {
   preview: true,
   opacity: true,
@@ -149,8 +177,7 @@ const TXTpickr = Pickr.create({
 });
 
 BGpickr.on('save', (color, instance) => {
-  editHistory.push({"code": 0, "val": highlightInput.value});
-  console.log('save', color, instance, 'color');
+  editHistory = ({"code": 0, "val": highlightInput.value});
   chrome.storage.sync.set({highlightColor: color.toHEXA().toString()}, function() {});
   updateUiColors(highlightInput, color);
   autoTextColorSet();
@@ -158,28 +185,21 @@ BGpickr.on('save', (color, instance) => {
   updateCurrentTab()
 });
 TXTpickr.on('save', (color, instance) => {
-  editHistory.push({"code": 1, "val": highlightTextInput.value});
-  console.log('save', color, instance, 'txt');
+  editHistory = ({"code": 1, "val": highlightTextInput.value});
   updateUiColors(highlightTextInput, color);
-  chrome.storage.sync.get(['highlightTextColor'], function(result) { if (result.highlightTextColor !== color.toHEXA().toString()){
-    chrome.storage.sync.set({highlightTextColor: color.toHEXA().toString(), highlightAutoTextColor: false}, function() {});
-    highlightAutoTextColor.checked = false;
-  }});
+  chrome.storage.sync.get(['highlightTextColor'], function(result) { 
+    if (result.highlightTextColor !== color.toHEXA().toString()){
+      chrome.storage.sync.set({highlightTextColor: color.toHEXA().toString(), highlightAutoTextColor: false}, function() {});
+      highlightAutoTextColor.checked = false;
+      console.log("setting it to false", result.highlightTextColor);
+    }
+  });
   document.getElementsByTagName("h1")[0].style.color = color.toHEXA().toString();
   updateCurrentTab()
 });
 
-function exchangeColors() {
-  var bgColor = BGpickr.getColor().toHEXA().toString();
-  var txtColor = TXTpickr.getColor().toHEXA().toString();
-  BGpickr.setColor(txtColor);
-  TXTpickr.setColor(bgColor);
-}
-exchangeButton.onclick = function() {
-  exchangeColors();
-}
 
-//Update Values
+// --- Startup --- //
 chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff', 'darkreader', 'highlightDynamicDarkColor', 'highlightAggressiveOverwrite'], function(result) {
   if(result.darkreader){changePopupTheme();}
   highlightOnOff.checked = result.highlightOnOff;
@@ -187,20 +207,10 @@ chrome.storage.sync.get(['highlightColor', 'highlightTextColor', 'highlightOnOff
   aggressiveOverwrite.checked = result.highlightAggressiveOverwrite;
   highlightInput.value = result.highlightColor
   highlightTextInput.value = result.highlightTextColor;
-  console.log(result.highlightColor + ", " + result.highlightTextColor);
   BGpickr.setColor(result.highlightColor);
   TXTpickr.setColor(result.highlightTextColor);
   document.getElementsByTagName("h1")[0].style.color = result.highlightTextColor;
   document.getElementsByTagName("h1")[0].style.background = result.highlightColor;
 });
 
-function updateCurrentTab() {
-  chrome.tabs.query({active: true}, function(result) {
-    for (let i = 0; i < result.length; i++) {
-      chrome.scripting.insertCSS({
-        target: {tabId: result[i].id}, 
-        css: '::selection { --cws-custom-highlight-bg:' + highlightInput.value + ';--cws-custom-highlight-txt:' + highlightTextInput.value + ';}'
-      });
-    }
-  });
-}
+autoTextColorSet();
