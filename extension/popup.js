@@ -93,7 +93,7 @@ function autoTextColorSet() {
   });
 }
 
-//Set page colors //Uses gh -> andreto/css-change
+//Set page colors
 function changePopupTheme(){
   root.classList.add("dark-ui");
 }
@@ -131,7 +131,7 @@ function updateUiColors(elem, color) {
 }
 
 function updateCurrentTab() {
-  chrome.tabs.query({}, function(result) {
+  chrome.tabs.query({active: true, currentWindow: true}, function(result) {
     for (let i = 0; i < result.length; i++) {
       if (result[i].url){
         chrome.scripting.insertCSS({
