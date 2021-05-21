@@ -25,7 +25,8 @@
 	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif;
 	background: url('data:image/svg+xml;utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" stroke="%2342445A" stroke-width="5px" stroke-linecap="round"><path d="M45,45L5,5"></path><path d="M45,5L5,45"></path></svg>') no-repeat 50%;
 	background-size: 0;
-	transition: all .3s
+	transition: all .3s;
+	border-color: var(--ui-pcr-background, #fff);
 }
 
 .pickr .pcr-button:before {
@@ -105,7 +106,7 @@
 	display: flex;
 	flex-direction: column;
 	z-index: 10000;
-	background: #fff;
+	background: var(--ui-pcr-background, #fff);
   border-radius: 5px;
 	opacity: 0;
 	visibility: hidden;
@@ -226,7 +227,7 @@
 	flex: 1 1 8em;
 	min-width: 8em;
 	transition: all .2s;
-	background: #f1f3f4;
+	background: var(--ui-pcr-input, #21252B);
 	cursor: text;
   border-radius: 3px;
 }

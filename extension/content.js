@@ -5,18 +5,17 @@ chrome.storage.sync.get(['highlightColor', 'highlightOnOff', 'highlightTextColor
     //Create style inject object
     var element = document.createElement('style');
     element.setAttribute('id','highlightColorStyleElem');
+    var important = '';
     if (result.highlightAggressiveOverwrite) {
-      element.innerHTML =
-      '::selection {background:' + result.highlightColor + ' !important; color:' + result.highlightTextColor + ' !important;}' +
-      '.kix-selection-overlay {background: ' + result.highlightColor + ';color:' + result.highlightTextColor + ';border-top-color:' + result.highlightColor + ';border-bottom-color:' + result.highlightColor + ';}';
-    } else {
-      element.innerHTML =
-      '::selection {background:' + result.highlightColor + '; color:' + result.highlightTextColor + ';}' +
-      '.kix-selection-overlay {background: ' + result.highlightColor + ';color:' + result.highlightTextColor + ';border-top-color:' + result.highlightColor + ';border-bottom-color:' + result.highlightColor + ';}';
+      important = '!important'
     }
+    element.innerHTML =
+      ':root { --cws-custom-highlight-bg:' + result.highlightColor + ';--cws-custom-highlight-txt:' + result.highlightTextColor + ';}' +
+      '::selection {background: var(--cws-custom-highlight-bg,' + result.highlightColor + ') '+important+'; color: var(--cws-custom-highlight-txt,' + result.highlightTextColor + ') '+important+';}' +
+      '.kix-selection-overlay {background: ' + result.highlightColor + ';color:' + result.highlightTextColor + ';border-top-color:' + result.highlightColor + ';border-bottom-color:' + result.highlightColor + ';}';
     //Append style element
     document.head.appendChild(element);
-
+    
 
     //Check for dark-reader style injects
     if (document.querySelectorAll("style.darkreader").length == 0){ //Set darkreader variable

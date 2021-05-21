@@ -1,22 +1,27 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
   "name": "Custom Highlight",
   "description": "A chrome extension for customizing highlight color.",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "author": "Andreto",
 
-  "browser_action": {
+  "action": {
    "default_popup": "popup.html"
   },
-  "permissions": ["storage"],
+  "permissions": [
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "content_scripts": [{
     "matches": ["<all_urls>"],
     "js": ["content.js"]
   }],
   "background": {
-    "scripts": ["background.js"],
-    "persistent": false
+    "service_worker": "background.js"
   },
   "icons": {
     "16": "icon16dev.png",
