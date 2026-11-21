@@ -3,7 +3,7 @@
 
   "name": "Custom Highlight",
   "description": "A chrome extension for customizing highlight color.",
-  "version": "1.5.0",
+  "version": "1.5.3",
   "author": "Andreto",
 
   "action": {

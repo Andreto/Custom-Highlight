@@ -18,19 +18,18 @@ chrome.storage.sync.get(['highlightColor', 'highlightOnOff', 'highlightTextColor
     
 
     //Check for dark-reader style injects
-    if (document.querySelectorAll("style.darkreader").length == 0){ //Set darkreader variable
-      var darkr = false;
-    }else{
-      var darkr = true;
-    }
+    const darkreaderStyles = document.querySelectorAll("style.darkreader");
+    const darkr = darkreaderStyles.length > 0;
     chrome.storage.sync.set({darkreader: darkr}, function() {});
 
     //Overwrite dark-reader
     if (darkr) {
       //Remove early, easy to reach injects
-      for (i = 0; i < document.querySelectorAll("style.darkreader").length; i++) {
-        if (document.querySelectorAll("style.darkreader")[i].innerHTML.includes("::selection")) {
-          document.querySelectorAll("style.darkreader")[i].innerHTML = document.querySelectorAll("style.darkreader")[i].innerHTML.replace("::selection", "#CustomHighlight-DarkreaderSelectionReplacer");
+      for (const style of darkreaderStyles) {
+        if (style.innerHTML.includes("::selection")) {
+          style.innerHTML = style.innerHTML.replace(
+            "::selection", "#CustomHighlight-DarkreaderSelectionReplacer"
+          );
         }
       }
       var darkreaderRemove;
