@@ -1,1 +1,4 @@
 .vscode/
+*.pem
+*.crx
+*.zip
